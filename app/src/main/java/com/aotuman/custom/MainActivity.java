@@ -6,10 +6,14 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<String> list = new ArrayList<String>();
     private StaggeredHomeAdapter adapter;
+    private TwinklingRefreshLayout twinklingRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +53,21 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"is be click long"+position,Toast.LENGTH_SHORT).show();
             }
         });
+
+        View view = LayoutInflater.from(this).inflate(R.layout.recyclerview_header,null);
+        RecyclerView recyclerView2 = (RecyclerView) view.findViewById(R.id.rel);
+        recyclerView2.setLayoutManager(new StaggeredGridLayoutManager(1,
+                StaggeredGridLayoutManager.HORIZONTAL));
+        recyclerView2.setAdapter(new SimpAdapter(this,list));
+        twinklingRefreshLayout.setPureScrollModeOn(true);
+        twinklingRefreshLayout.addFixedExHeader(view);
+        recyclerView.setPadding(0,150,0,0);
+        recyclerView.requestLayout();
     }
 
     private void initView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycle_view);
+        twinklingRefreshLayout = (TwinklingRefreshLayout) findViewById(R.id.activity_main);
     }
 
     private void initData() {
